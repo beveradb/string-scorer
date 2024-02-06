@@ -1,0 +1,44 @@
+[tool.poetry]
+name = "string-scorer"
+version = "0.1.0"
+description = "Simple API which takes an input string, scores it using various machine learning models, and returns the scores."
+authors = ["Andrew Beveridge <andrew@beveridge.uk>"]
+readme = "README.md"
+license = "MIT"
+packages = [{ include = "string_scorer" }]
+homepage = "https://github.com/beveradb/string-scorer"
+repository = "https://github.com/beveradb/string-scorer"
+documentation = "https://github.com/beveradb/string-scorer/blob/main/README.md"
+keywords = ["AI", "ML", "machine-learning", "text", "scoring"]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Text Processing :: Indexing",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+[tool.poetry.scripts]
+string-scorer = "string_scorer.server:entrypoint"
+
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+flask = "^3.0.2"
+flask-sqlalchemy = "^3.1.1"
+
+[tool.poetry.group.dev.dependencies]
+black = ">=23"
+pytest = "*"
+pytest-cov = "^4.1.0"
+
+[tool.black]
+line-length = 200
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
