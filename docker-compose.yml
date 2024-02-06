@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  stringscorerapp:
+    build: .
+    ports:
+      - "54321:54321"
+    depends_on:
+      - stringscorerdb
+    environment:
+      - DATABASE_HOST=stringscorerdb
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=stringscorerdb
+      - DATABASE_USER=scorer
+      - DATABASE_PASSWORD=scorer
+
+  stringscorerdb:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: scorer
+      POSTGRES_PASSWORD: scorer
+      POSTGRES_DB: stringscorerdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -1,5 +1,6 @@
 import logging
 import random
+import os
 from flask import Flask, request, jsonify
 from .database import StringScorerDB
 
@@ -21,8 +22,15 @@ class StringScorerServer:
         self.logger.setLevel(logging.DEBUG)
 
     def initialize_db(self):
-        self.logger.debug("Initializing database with app context.")
-        self.db = StringScorerDB(self.app, "sqlite:///textscore.db")
+        database_host = os.environ.get("DATABASE_HOST", "stringscorerdb")
+        database_port = os.environ.get("DATABASE_PORT", "5432")
+        database_name = os.environ.get("DATABASE_NAME", "stringscorerdb")
+        database_user = os.environ.get("DATABASE_USER", "scorer")
+        database_password = os.environ.get("DATABASE_PASSWORD", "scorer")
+        database_connection = f"postgresql://{database_user}:{database_password}@{database_host}:{database_port}/{database_name}"
+
+        self.logger.debug(f"Initializing database with host: {database_connection}")
+        self.db = StringScorerDB(self.app, database_connection)
 
         with self.app.app_context():
             self.db.initialize_db()
@@ -47,7 +55,7 @@ class StringScorerServer:
 
     def start_server(self):
         self.logger.debug("Initialization complete. Starting Flask server.")
-        self.app.run(debug=True, port=54321)
+        self.app.run(debug=True, host="0.0.0.0", port=54321)
 
 
 def entrypoint():
