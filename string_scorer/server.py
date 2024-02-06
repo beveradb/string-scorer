@@ -26,15 +26,14 @@ class StringScorerServer:
         self.logger.setLevel(logging.DEBUG)
 
     def initialize_db(self):
-        database_host = os.environ.get("DATABASE_HOST", "stringscorerdb")
-        database_port = os.environ.get("DATABASE_PORT", "5432")
-        database_name = os.environ.get("DATABASE_NAME", "stringscorerdb")
-        database_user = os.environ.get("DATABASE_USER", "scorer")
-        database_password = os.environ.get("DATABASE_PASSWORD", "scorer")
-        database_connection = f"postgresql://{database_user}:{database_password}@{database_host}:{database_port}/{database_name}"
+        db_host = os.environ.get("DATABASE_HOST", "stringscorerdb")
+        db_port = os.environ.get("DATABASE_PORT", "5432")
+        db_name = os.environ.get("DATABASE_NAME", "stringscorerdb")
+        db_user = os.environ.get("DATABASE_USER", "scorer")
+        db_password = os.environ.get("DATABASE_PASSWORD", "scorer")
 
-        self.logger.debug(f"Initializing database with host: {database_connection}")
-        self.db = StringScorerDB(self.app, database_connection)
+        self.logger.debug(f"Initializing database with host: {db_host}")
+        self.db = StringScorerDB(app=self.app, host=db_host, port=db_port, name=db_name, user=db_user, password=db_password)
 
         with self.app.app_context():
             self.db.initialize_db()
@@ -70,12 +69,11 @@ class StringScorerServer:
             return jsonify(scores)
 
 
-server = StringScorerServer()
-app = server.app
+def production_gunicorn_worker():
+    server = StringScorerServer()
+    return server.app
 
 
 def start_local_dev_server():
-    import webbrowser
-
-    webbrowser.open("http://localhost:54321")
-    server.socketio.run(app, host="0.0.0.0", port=54321, debug=True)
+    server = StringScorerServer()
+    server.socketio.run(server.app, host="0.0.0.0", port=54321, debug=True)

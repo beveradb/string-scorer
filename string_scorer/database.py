@@ -4,8 +4,10 @@ from flask_sqlalchemy import SQLAlchemy
 
 
 class StringScorerDB:
-    def __init__(self, app, db_uri):
+    def __init__(self, app, user, password, host, port, name):
         self.app = app
+
+        db_uri = f"postgresql://{user}:{password}@{host}:{port}/{name}"
         self.app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
         self.app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 

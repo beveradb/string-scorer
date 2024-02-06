@@ -31,4 +31,5 @@ WORKDIR /app
 # Expose the port the app runs on
 EXPOSE 54321
 
-CMD ["gunicorn", "-b", "0.0.0.0:54321", "-k", "eventlet", "-w", "1", "--timeout", "120", "string_scorer.server:app"]
+CMD ["gunicorn", "-b", "0.0.0.0:54321", "-k", "eventlet", "-w", "1", "--timeout", "120", \
+    "string_scorer.server:production_gunicorn_worker()"]
