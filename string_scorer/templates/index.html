@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>String Scorer Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/app.js"></script>
+    <link rel="stylesheet" href="/static/css/style.css"> <!-- Optional: Add your CSS file for styling -->
+</head>
+
+<body>
+    <h1>String Scorer Dashboard</h1>
+    <div>
+        <h2>Score Graph</h2>
+        <canvas id="scoreGraph"></canvas>
+    </div>
+    <div>
+        <h2>History</h2>
+        <table id="historyTable">
+            <thead>
+                <tr>
+                    <th>Text</th>
+                    <th>Scores</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows will be added here by app.js -->
+            </tbody>
+        </table>
+    </div>
+    <script>
+        // Initialize your chart and table after the page is loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchDataAndRender(); // This function should be defined in app.js
+        });
+    </script>
+</body>
+
+</html>

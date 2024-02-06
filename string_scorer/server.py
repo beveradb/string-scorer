@@ -1,7 +1,7 @@
 import logging
 import random
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, render_template, request, jsonify
 from .database import StringScorerDB
 
 
@@ -37,6 +37,16 @@ class StringScorerServer:
         self.logger.debug("Database tables created.")
 
     def configure_routes(self):
+        @self.app.route("/")
+        def index():
+            return render_template("index.html")
+
+        @self.app.route("/data")
+        def data():
+            # Fetch data from the database
+            data = self.db.get_all_scores()
+            return jsonify(data)
+
         @self.app.route("/score_text", methods=["POST"])
         def score_text():
             self.logger.debug("Received request to score text.")
@@ -44,7 +54,7 @@ class StringScorerServer:
             data = request.json
             text = data.get("text")
 
-            # Placeholder for scoring function
+            # TODO: Implement actual  ML inferencing / scoring mechanism
             scores = {"vectara": random.random(), "toxicity": random.random()}
             self.logger.debug(f"Scoring complete. Text: {text}, Score: {scores}")
 

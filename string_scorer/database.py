@@ -27,6 +27,10 @@ class StringScorerDB:
         self.db.session.commit()
         return log_entry
 
+    def get_all_scores(self):
+        entries = self.LogEntry.query.all()
+        return [{"text": entry.text, "scores": json.loads(entry.scores)} for entry in entries]
+
 
 def setup_models(db):
     class LogEntry(db.Model):
