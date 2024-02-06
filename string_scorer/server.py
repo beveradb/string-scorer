@@ -1,7 +1,8 @@
 import logging
 import random
 import os
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, send_from_directory, request, jsonify
+from flask_socketio import SocketIO, emit
 from .database import StringScorerDB
 
 
@@ -9,7 +10,9 @@ class StringScorerServer:
     def __init__(self):
         self.setup_logging()
         self.logger.debug("Initializing StringScorerServer.")
-        self.app = Flask(__name__)
+        self.app = Flask(__name__, static_url_path="", static_folder="frontend/build")
+
+        self.socketio = SocketIO(self.app, cors_allowed_origins="*")
         self.initialize_db()
         self.configure_routes()
 
@@ -39,7 +42,7 @@ class StringScorerServer:
     def configure_routes(self):
         @self.app.route("/")
         def index():
-            return render_template("index.html")
+            return send_from_directory(self.app.static_folder, "index.html")
 
         @self.app.route("/data")
         def data():
@@ -61,13 +64,9 @@ class StringScorerServer:
             log_entry = self.db.create_log_entry(text, scores)
             self.logger.debug(f"Logged to database: {log_entry}")
 
+            self.socketio.emit("scoreUpdate", {"text": text, "scores": scores})
+
             return jsonify(scores)
 
-    def start_server(self):
-        self.logger.debug("Initialization complete. Starting Flask server.")
-        self.app.run(debug=True, host="0.0.0.0", port=54321)
-
-
-def entrypoint():
-    server = StringScorerServer()
-    server.start_server()
+server = StringScorerServer()
+app = server.app
