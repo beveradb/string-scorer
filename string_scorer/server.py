@@ -1,9 +1,10 @@
 import logging
-import random
 import os
 from flask import Flask, send_from_directory, request, jsonify
-from flask_socketio import SocketIO, emit
-from .database import StringScorerDB
+from flask_socketio import SocketIO
+
+from string_scorer.inference import StringScorerInferencer
+from string_scorer.database import StringScorerDB
 
 
 class StringScorerServer:
@@ -46,7 +47,6 @@ class StringScorerServer:
 
         @self.app.route("/data")
         def data():
-            # Fetch data from the database
             data = self.db.get_all_scores()
             return jsonify(data)
 
@@ -57,8 +57,9 @@ class StringScorerServer:
             data = request.json
             text = data.get("text")
 
-            # TODO: Implement actual  ML inferencing / scoring mechanism
-            scores = {"vectara": random.random(), "toxicity": random.random()}
+            inferencer = StringScorerInferencer(logger=self.logger, models=["vectara", "toxicity"], input_text=text)
+            scores = inferencer.run()
+
             self.logger.debug(f"Scoring complete. Text: {text}, Score: {scores}")
 
             log_entry = self.db.create_log_entry(text, scores)
@@ -68,5 +69,13 @@ class StringScorerServer:
 
             return jsonify(scores)
 
+
 server = StringScorerServer()
 app = server.app
+
+
+def start_local_dev_server():
+    import webbrowser
+
+    webbrowser.open("http://localhost:54321")
+    server.socketio.run(app, host="0.0.0.0", port=54321, debug=True)

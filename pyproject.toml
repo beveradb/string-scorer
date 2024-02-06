@@ -22,9 +22,16 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
 ]
 
-[tool.poetry.scripts]
-string-scorer = "string_scorer.server:entrypoint"
+[tool.poe.tasks.build-frontend]
+cmd = "npm run build"
+cwd = "string_scorer/frontend"
 
+[tool.poe.tasks.run-server]
+env = { DATABASE_HOST = "localhost" }
+script = "string_scorer.server:start_local_dev_server"
+
+[tool.poe.tasks.start]
+sequence = [{ ref = "build-frontend" }, { ref = "run-server" }]
 
 [tool.poetry.dependencies]
 python = ">=3.10"
@@ -34,6 +41,8 @@ psycopg2-binary = "^2.9.9"
 flask-socketio = "^5.3.6"
 gunicorn = "^21.2.0"
 eventlet = "^0.35.1"
+sentence-transformers = "^2.3.1"
+detoxify = "^0.5.2"
 
 [tool.poetry.group.dev.dependencies]
 black = ">=23"
