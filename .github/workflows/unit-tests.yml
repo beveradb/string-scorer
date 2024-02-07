@@ -15,7 +15,7 @@ jobs:
         python-version: '3.10'
         cache: 'poetry'
     - run: poetry install
-    - run: poetry run pytest tests/unit --cov 
+    - run: pytest tests/unit --cov=./ --cov-report=xml
 
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v3

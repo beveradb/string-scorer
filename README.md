@@ -1,6 +1,7 @@
 # String Scorer 🧵
 
 [![codecov](https://codecov.io/gh/beveradb/string-scorer/graph/badge.svg?token=LL8VBV0UC8)](https://codecov.io/gh/beveradb/string-scorer)
+![Docker Pulls](https://img.shields.io/docker/pulls/beveradb/string-scorer)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbeveradb%2Fstring-scorer.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbeveradb%2Fstring-scorer?ref=badge_shield)
 
 ## Overview 
