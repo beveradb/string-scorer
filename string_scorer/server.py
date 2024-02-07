@@ -39,6 +39,24 @@ class StringScorerServer:
             self.db.initialize_db()
         self.logger.debug("Database tables created.")
 
+    def score_text(self, request):
+        self.logger.debug("Received request to score text.")
+
+        data = request.json
+        text = data.get("text")
+
+        inferencer = StringScorerInferencer(logger=self.logger, models=["vectara", "toxicity"], input_text=text)
+        scores = inferencer.run()
+
+        self.logger.debug(f"Scoring complete. Text: {text}, Score: {scores}")
+
+        log_entry = self.db.create_log_entry(text, scores)
+        self.logger.debug(f"Logged to database: {log_entry}")
+
+        self.socketio.emit("scoreUpdate", {"text": text, "scores": scores})
+
+        return scores
+
     def configure_routes(self):
         @self.app.route("/")
         def index():
@@ -50,23 +68,8 @@ class StringScorerServer:
             return jsonify(data)
 
         @self.app.route("/score_text", methods=["POST"])
-        def score_text():
-            self.logger.debug("Received request to score text.")
-
-            data = request.json
-            text = data.get("text")
-
-            inferencer = StringScorerInferencer(logger=self.logger, models=["vectara", "toxicity"], input_text=text)
-            scores = inferencer.run()
-
-            self.logger.debug(f"Scoring complete. Text: {text}, Score: {scores}")
-
-            log_entry = self.db.create_log_entry(text, scores)
-            self.logger.debug(f"Logged to database: {log_entry}")
-
-            self.socketio.emit("scoreUpdate", {"text": text, "scores": scores})
-
-            return jsonify(scores)
+        def score_text_route():
+            return jsonify(self.score_text(request))
 
 
 def production_gunicorn_worker():

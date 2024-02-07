@@ -22,6 +22,9 @@ classifiers = [
     "Programming Language :: Python :: 3.11",
 ]
 
+[tool.poe.tasks.start-database]
+cmd = "docker compose up -d stringscorerdb"
+
 [tool.poe.tasks.build-frontend]
 cmd = "npm run build"
 cwd = "string_scorer/frontend"
@@ -31,7 +34,11 @@ env = { DATABASE_HOST = "localhost" }
 script = "string_scorer.server:start_local_dev_server"
 
 [tool.poe.tasks.start]
-sequence = [{ ref = "build-frontend" }, { ref = "run-server" }]
+sequence = [
+    { ref = "start-database" },
+    { ref = "build-frontend" },
+    { ref = "run-server" },
+]
 
 [tool.poetry.dependencies]
 python = ">=3.10"
