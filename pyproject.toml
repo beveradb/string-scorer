@@ -40,6 +40,14 @@ sequence = [
     { ref = "run-server" },
 ]
 
+[tool.poe.tasks.stop]
+sequence = [{ cmd = "pkill -f 'python'" }, { cmd = "docker compose down" }]
+
+[tool.poe.tasks.test]
+help = "Run pytest unit tests followed by integration tests."
+sequence = [{ cmd = "pytest tests/unit --cov=string_scorer" }, { cmd = "pytest tests/integration" }]
+
+
 [tool.poetry.dependencies]
 python = ">=3.10"
 flask = "^3.0.2"
