@@ -1,5 +1,7 @@
 # String Scorer 🧵
 
+[![codecov](https://codecov.io/gh/beveradb/string-scorer/graph/badge.svg?token=LL8VBV0UC8)](https://codecov.io/gh/beveradb/string-scorer)
+
 ## Overview 
 String Scorer provides a simple API which takes an input string, scores it using various machine learning models, and returns the scores.
 It provides a minimal web interface which plots the results on a graph, in real-time as requests arrive.
@@ -26,7 +28,7 @@ For a visual representation of the interface, please refer to the screenshot bel
 
 ![String Scorer Web Interface](string_scorer/frontend/docs/screenshot.png)
 
-## REST API 🔥
+## REST API ⚙️
 
 1. **Scoring Text**: To score a piece of text, send a POST request to the `/score_text` endpoint with a JSON payload containing the text. For example:
    ```bash
