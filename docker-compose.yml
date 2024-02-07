@@ -8,6 +8,7 @@ services:
     depends_on:
       - stringscorerdb
     environment:
+      - REACT_APP_SOCKET_IO_URL=http://localhost:54321
       - DATABASE_HOST=stringscorerdb
       - DATABASE_PORT=5432
       - DATABASE_NAME=stringscorerdb

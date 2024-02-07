@@ -24,7 +24,7 @@ ChartJS.register(
     Legend
 );
 
-const socket = io('http://localhost:54321'); // Adjust the URL/port as necessary
+const socket = io(process.env.REACT_APP_SOCKET_IO_URL); // Adjust the URL/port as necessary
 
 const Dashboard = () => {
     const [data, setData] = useState([]);
