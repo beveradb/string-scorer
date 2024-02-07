@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import io from 'socket.io-client';
+import axios from 'axios';
 
 import {
     Chart as ChartJS,
@@ -27,8 +28,29 @@ const socket = io('http://localhost:54321'); // Adjust the URL/port as necessary
 
 const Dashboard = () => {
     const [data, setData] = useState([]);
+    const [inputText, setInputText] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleInputChange = (event) => {
+        setInputText(event.target.value);
+    };
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        setIsLoading(true);
+        axios.post('/score_text', { text: inputText })
+            .then(_ => {
+                setInputText(''); // Clear the input box after submission
+                setIsLoading(false);
+            })
+            .catch(error => {
+                console.error('Error submitting text:', error);
+                setIsLoading(false);
+            });
+    };
 
     useEffect(() => {
+        setIsLoading(true);
         socket.on('scoreUpdate', newData => {
             setData(currentData => [...currentData, newData]);
         });
@@ -36,7 +58,14 @@ const Dashboard = () => {
         // Fetch initial data
         fetch('/data')
             .then(response => response.json())
-            .then(setData);
+            .then(data => {
+                setData(data);
+                setIsLoading(false);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+                setIsLoading(false);
+            });
 
         return () => socket.off('scoreUpdate');
     }, []);
@@ -54,7 +83,7 @@ const Dashboard = () => {
         labels: data.map((_, index) => `Entry ${index + 1}`),
         datasets: [
             {
-                label: 'Vectara Score',
+                label: 'Hallucination Score',
                 data: data.map(entry => entry.scores.vectara),
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -70,7 +99,18 @@ const Dashboard = () => {
 
     return (
         <div>
-            <h1>String Scorer Dashboard</h1>
+            <h1>String Scorer</h1>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="inputText">Enter text:</label>
+                <input
+                    type="text"
+                    id="inputText"
+                    value={inputText}
+                    onChange={handleInputChange}
+                />
+                {isLoading ? <button type="submit" disabled>Loading...</button> : <button type="submit">Submit</button>}
+            </form>
+
             <div className="dashboard-container">
                 <div className="chart-container">
                     <h2>Chart</h2>
@@ -96,9 +136,9 @@ const Dashboard = () => {
                     </table>
                 </div>
             </div>
+
         </div>
     );
 };
 
 export default Dashboard;
-

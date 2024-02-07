@@ -1,33 +1,45 @@
-.App {
-  text-align: center;
+/* Global styles */
+body,
+html {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
+/* App container */
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Logo styles */
 .App-logo {
   height: 40vmin;
   pointer-events: none;
 }
 
+/* Animation for logo */
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
+/* Header styles */
 .App-header {
   background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding: 20px 0;
   color: white;
 }
 
+/* Link styles */
 .App-link {
   color: #61dafb;
 }
 
+/* Animation keyframes */
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -38,31 +50,47 @@
   }
 }
 
+/* Dashboard container */
 .dashboard-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
   padding: 20px;
+  gap: 20px;
 }
 
+/* Chart container */
 .chart-container {
   flex: 1;
-  max-width: 50%;
-  height: 60vh; /* Example height */
+  min-width: 300px;
+  /* Minimum width */
+  max-height: 60vh;
+  /* Maximum height as 60% of the viewport height */
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* History container */
 .history-container {
   flex: 1;
-  max-width: 50%;
-  max-height: 65vh;
-  /* Maximum height */
+  min-width: 300px;
+  max-height: 60vh;
+  /* Minimum width */
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
-  /* Enable vertical scrolling */
 }
 
+/* Table styles */
 table {
-  margin-top: 50px;
   width: 100%;
   border-collapse: collapse;
+  margin-top: 0;
+  /* Remove margin */
 }
 
 table,
@@ -74,7 +102,7 @@ td {
 th,
 td {
   text-align: left;
-  padding: 8px;
+  padding: 12px;
 }
 
 th {
@@ -84,4 +112,49 @@ th {
 
 tr:nth-child(even) {
   background-color: #f2f2f2;
+}
+
+tr:hover {
+  background-color: #e8f5e9; /* A light green background for hover */
+}
+
+/* Form styles */
+form {
+  margin-top: 20px;
+}
+
+label {
+  margin-right: 10px; /* Add right margin to label */
+}
+
+input[type="text"] {
+  padding: 10px;
+  margin-right: 10px; /* Maintain existing margin for spacing between input and button */
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #04AA6D;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #038c5a;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .chart-container,
+  .history-container {
+    max-width: 100%;
+  }
 }
