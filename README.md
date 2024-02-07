@@ -1,6 +1,7 @@
 # String Scorer 🧵
 
 [![codecov](https://codecov.io/gh/beveradb/string-scorer/graph/badge.svg?token=LL8VBV0UC8)](https://codecov.io/gh/beveradb/string-scorer)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbeveradb%2Fstring-scorer.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbeveradb%2Fstring-scorer?ref=badge_shield)
 
 ## Overview 
 String Scorer provides a simple API which takes an input string, scores it using various machine learning models, and returns the scores.
@@ -210,3 +211,6 @@ The String Scorer API consists of several key components:
 ## License 📄
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbeveradb%2Fstring-scorer.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbeveradb%2Fstring-scorer?ref=badge_large)
